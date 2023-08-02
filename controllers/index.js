@@ -1,38 +1,17 @@
-const router = require('express').Router();
-const apiRoutes = require('./api');
+const express = require('express');
+const router = express.Router();
+const path = require('path');
+const apiRoutes = require('./api'); // Import the apiRoutes module
 const dashboardRoutes = require('./dashboard-routes.js');
-const { Post, Comment, User } = require('../models');
+const homeRoutes = require('./home-routes.js');
+const { Post, Comment, User } = require(path.join(__dirname, '..', 'models'));
 
-// Import your helper functions if needed
-// const helpers = require('../utils/helpers');
+// ... (other imports)
 
+// Define your routes here
 router.use('/api', apiRoutes);
 router.use('/dashboard', dashboardRoutes);
-
-// Route for rendering the homepage
-router.get('/', async (req, res) => {
-  try {
-    const dbPostData = await Post.findAll({
-      // ... (your Post.findAll options)
-    });
-
-    const posts = dbPostData.map((post) => post.get({ plain: true }));
-
-    res.render('homepage', {
-      posts,
-      // You can include other data you want to pass to the view
-      // loggedIn: req.session.loggedIn,
-      // helpers: helpers,
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
-// Catch-all 404 route
-router.use((req, res) => {
-  res.status(404).end();
-});
+router.use('home-routes', homeRoutes);
+// Add more routes as needed
 
 module.exports = router;
