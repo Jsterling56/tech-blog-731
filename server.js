@@ -23,7 +23,7 @@ const sess = {
     db: sequelize,
   }),
 };
-
+// rfnkurle@gmail.com
 app.use(session(sess));
 const hbs = exphbs.create({helpers});
 
